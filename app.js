@@ -107,6 +107,7 @@ function addLetter(letter) {
     if (nextLetter < 5) { // checks if there is space in the current guess (5 letters max).
         let row = document.getElementsByClassName('letter-row')[numberOfGuesses - guessesRemaining]; // selects the current row based on guesses remaining.
         let box = row.children[nextLetter]; // selects the current letter box in the current row.
+        animateCSS(box, "pulse"); // applies a pulse animation to the letter box when a letter is added.
         //let box = row.getElementsByClassName('letter-box')[nextLetter]; // selects the current letter box in the current row.
         box.textContent = letter; // sets the text content of the letter box to the pressed letter.
         currentGuess.push(letter); // adds the pressed letter to the current guess array.
@@ -173,6 +174,7 @@ function checkGuess () {
         let delay = 250 * i; // sets a delay for the letter box color change animation.
         // set a timeout to change the letter box color after the delay.
         setTimeout(()=> {
+            animateCSS(box, 'flipInX'); // applies a flip-in animation to the letter box when the letter is checked.
             box.style.backgroundColor = letterColor; // changes the background color of the letter box to the determined color.
             shadeKeyBoard(letter, letterColor); // calls the shadeKeyboard function to update the keyboard letter color based on the user's guess.
         }, delay); // applies the delay to the letter box color change animation.
