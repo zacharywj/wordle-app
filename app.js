@@ -23,6 +23,7 @@ console.log(correctGuess); // logs the randomly selected word to the console to 
 /* ************************************************* EVENT LISTENERS *************************************************
 primary event listener for different key presses that handles user input for the game and manages the game state.
 when specific key presses received from user, listener calls the appropriate functions to handle them (such as  when adding/deleting letters, or submitting/checking guesses. */
+// primary event listener that handles user inputs from keyboard (on-screen or physical) and updates game state accordingly.
 document.addEventListener('keydown', (event) => { // event listener for key presses.
     if (guessesRemaining === 0) {
         return; // if out of guesses, do nothing and return to the event listener.
@@ -45,6 +46,28 @@ document.addEventListener('keydown', (event) => { // event listener for key pres
         addLetter(pressedKey); // calls the addLetter function with the pressed key as an argument.
     }
 });
+
+// event listener to generate input from the on-screen keyboard:
+document.getElementById('keyboard').addEventListener('click', (event) => {
+    const target = event.target; // gets the element/keyboard button that was clicked.
+
+    if (!target.classList.contains('key')) {
+        return; // if the clicked element is not a key, do nothing and return to the event listener.
+    }
+
+    let key = target.textContent; // gets the text content of the clicked key.
+    if (key === 'DEL' || key === 'Delete') {
+        key = 'Backspace'; // if the key is 'DEL' or 'Delete', sets it to 'Backspace' for consistency with the keydown event listener.
+    }
+    if (key === 'GUESS' || key === 'Enter') {
+        key = 'Enter'; // if the key is 'GUESS' or 'Enter', sets it to 'Enter' for consistency with the keydown event listener.
+    }
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {'key': key})); 
+    // dispatches a new keyboard event with the pressed key to trigger the same functionality as the keydown event listener.
+    // this allows the on-screen keyboard to work the same way as the physical keyboard.
+});
+
 
 
 /* ************************************************* FUNCTIONS *************************************************
@@ -108,120 +131,86 @@ function deleteLetter() {
 
 
 
-
-
-
-//checkGuess() -- function to validate the user's guess called by the event listener when the Enter key is pressed:
-function checkGuess() {
+function checkGuess () {
     let row = document.getElementsByClassName('letter-row')[6 - guessesRemaining]; // selects the current row based on guesses remaining.
     let guessString = ''; // initializes an empty string to hold the guessed word.
     let rightGuess = Array.from(correctGuess); // converts the correctGuess into an array for comparison to the user's guess.
 
-    for (let i = 0; i < currentGuess.length; i++) {
-        guessString += currentGuess[i]; // builds the guessed word string from the current guess array.
-    }
-    if (currentGuess.length !== 5) { // checks if the current guess is not 5 letters long.
-        alert('Not enough letters! Please enter a 5-letter word.'); // alerts the user if their guess is not long enough.
-        return; // returns to the event listener to wait for the next key press.
-    } 
-
-    if (!wordBank.includes(guessString)) { 
-        alert('That word is not in the word bank!! 🤣 Try again, silly.'); // alerts the user if their guess is not a valid word.
-        return; // returns to the event listener to wait for the next key press.
-    }
-
-
-    for (let i = 0; i < 5; i++) { // iterates through each letter in the guessed word.
-        let letterColor = ''; // variable initialized to hold the color for the letter boxes.
-        let box = row.children[i]; // selects the current letter box in the current row.
-        let letter = currentGuess[i]; // gets the current letter from the user's guess.
-        let letterPosition = rightGuess.indexOf(letter); // checks if the letter is in the correct guess.
-
-        if (letterPosition === -1) { // if the letter is not in the correct guess...
-            letterColor = 'grey'; // sets the letter box color to grey.
-        } else { // if the letter IS in the correct guess... 
-            if (letter === rightGuess[i]) { // checks if letter is in the rightGuess AND in right position by index...
-                letterColor = 'green'; // then sets the letter box color to green if so.
-                } else { 
-                    letterColor = 'yellow';  // if the letter is in the rightGuess but NOT in the right position, sets the letter box color to yellow.
-                }
-        }
-
-
-    }        let delay = 250 * i; // sets a delay for the letter box color change animation.
-        setTimeout(() => { // sets a timeout to change the letter box color after the delay.
-            box.style.backgroundColor = letterColor; // changes the background color of the letter box to the determined color.
-            shadeKeyboard(letter, letterColor); // calls the shadeKeyboard function to update the keyboard letter color based on the user's guess.
-        }, delay); // applies the delay to the letter box color change animation.
-    }
-
-
-/* 
-function checkGuess () {
-    let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
-    let guessString = ''
-    let rightGuess = Array.from(rightGuessString)
-
     for (const val of currentGuess) {
-        guessString += val
+        guessString += val; // builds the guessed word string from the current guess array.
     }
 
-    if (guessString.length != 5) {
-        alert("Not enough letters!")
-        return
+    if (guessString.length != 5) { // checks if the current guess is not 5 letters long/invalid.
+        toastr.error("Guesses must be 5 letters!! 🤣 Try again, silly."); // alerts the user if their guess is not long enough.
+        return; // returns to the event listener to wait for the next key press.
     }
 
-    if (!WORDS.includes(guessString)) {
-        alert("Word not in list!")
-        return
+    if (!wordBank.includes(guessString)) { // checks if the guessed word is not in the word bank/invalid.
+        toastr.error("Hmmm, I don't know that word. 🤨 Try another one."); // alerts the user if their guess is not in the word bank.
+        return; // returns to the event listener to wait for the next key press.
     }
 
 
     for (let i = 0; i < 5; i++) {
-        let letterColor = ''
-        let box = row.children[i]
-        let letter = currentGuess[i]
+        let letterColor = ''; // variable initialized to hold the color for the letter boxes.
+        let box = row.children[i]; // selects the current letter box in the current row.
+        let letter = currentGuess[i]; // gets the current letter from the user's guess.
 
         let letterPosition = rightGuess.indexOf(currentGuess[i])
         // is letter in the correct guess
-        if (letterPosition === -1) {
-            letterColor = 'grey'
-        } else {
-            // now, letter is definitely in word
-            // if letter index and right guess index are the same
-            // letter is in the right position 
-            if (currentGuess[i] === rightGuess[i]) {
-                // shade green 
-                letterColor = 'green'
-            } else {
-                // shade box yellow
-                letterColor = 'yellow'
+        if (letterPosition === -1) { // if the letter is not in the correct guess...
+            letterColor = 'grey' // sets the letter box color to grey.
+        } else { // if the letter IS in the correct guess...
+            if (currentGuess[i] === rightGuess[i]) { // checks if letter is in the rightGuess AND in right position by index...
+                letterColor = 'green'; // shades the letter box green if so.
+            } else { // if the letter is in the rightGuess but NOT in the right position as well...
+                letterColor = 'yellow'; // shades the letter box yellow if so.
             }
 
-            rightGuess[letterPosition] = "#"
+            rightGuess[letterPosition] = '#'; // marks the letter as checked by replacing it with a placeholder.
         }
 
-        let delay = 250 * i
+        let delay = 250 * i; // sets a delay for the letter box color change animation.
+        // set a timeout to change the letter box color after the delay.
         setTimeout(()=> {
-            //shade box
-            box.style.backgroundColor = letterColor
-            shadeKeyBoard(letter, letterColor)
-        }, delay)
+            box.style.backgroundColor = letterColor; // changes the background color of the letter box to the determined color.
+            shadeKeyBoard(letter, letterColor); // calls the shadeKeyboard function to update the keyboard letter color based on the user's guess.
+        }, delay); // applies the delay to the letter box color change animation.
     }
 
-    if (guessString === rightGuessString) {
-        alert("You guessed right! Game over!")
-        guessesRemaining = 0
-        return
-    } else {
-        guessesRemaining -= 1;
-        currentGuess = [];
-        nextLetter = 0;
-
-        if (guessesRemaining === 0) {
-            alert("You've run out of guesses! Game over!")
-            alert(`The right word was: "${rightGuessString}"`)
+    if (guessString === correctGuess) { // checks if the user's guess matches the correct guess.
+        // alerts the user if they guessed the word correctly.
+        toastr.success("You guessed my word!! You win! 🎉");
+        guessesRemaining = 0; // sets guesses remaining to 0 to end the game.
+        return;
+    } else { // if the guess was incorrect...
+        guessesRemaining -= 1; // decrements the guesses remaining by 1 if the guess was incorrect.
+        currentGuess = []; // resets the current guess array for the next guess.
+        nextLetter = 0; // resets the index for the next letter to be added.
+        if (guessesRemaining === 0) { // checks if the user has run out of guesses.
+            // alerts the user if they ran out of guesses and what the answer was.
+            toastr.error("Oof, you ran out of guesses! 😢 That's game over, baby.");
+            toastr.info(`The word I was thinking of was: "${correctGuess}"`); // informs the user of the correct word.
         }
     }
 }
-    */
+
+// shadeKeyboard() -- function to update the keyboard letter colors based on the user's guess:
+function shadeKeyboard(letter, color) {
+    for (const elem of document.getElementsByClassName('key')) {
+        if (elem.textContent === letter) {
+            let oldColor = elem.style.backgroundColor; // gets the current background color of the key.
+            if (oldColor === 'green') {
+                return; // if the key is already green, do nothing and return.
+            } 
+            if (oldColor === 'yellow' && color !== 'green') {
+                return; // if the key is already yellow and the new color is not green, do nothing and return.
+            }
+
+            elem.style.backgroundColor = color; // sets the background color of the key to the new color.
+            break; // breaks out of the loop after updating the key color.
+        }
+    }
+}
+
+
