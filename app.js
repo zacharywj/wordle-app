@@ -214,3 +214,22 @@ function shadeKeyboard(letter, color) {
 }
 
 
+// function utilizing animate.css to utilize the animation library for visual effects in the game.
+const animateCSS = (element, animation, prefix = 'animate__') => { // adds the animateCSS function to apply animations to elements.
+    return new Promise((resolve, reject) => { // creates a new Promise to handle the animation.
+        const animationName = `${prefix}${animation}`; // constructs the animation class name.
+        
+        const node = element;
+        node.style.setProperty('--animate-duration', '0.5s'); // sets the animation duration to 0.5 seconds.
+        node.classList.add(`${prefix}animated`, animationName); // adds the animation classes to the element.
+
+        function handleAnimationEnd(event) { // function to handle the end of the animation.
+            node.classList.remove(`${prefix}animated`, animationName); // removes the animation classes from the element.
+            resolve('Animation ended'); // resolves the Promise when the animation ends.
+        }
+
+        node.addEventListener('animationend', handleAnimationEnd, {once: true}); // adds an event listener for the animation end event to handle cleanup.
+    });
+}
+
+
