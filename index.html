@@ -15,14 +15,34 @@
 
   <script defer="app.js"></script>
   <script defer="word-bank.js"></script>
+
+  
 </head>
 <body>
-    <h1>Wordle!</h1>
+    <h1>
+        <img src="assets/wordle-simple-logo.png" alt="Game Title Logo" class="animate__animated animate__pulse animate__infinite" width="300" height="100">
+    </h1>
 
     <div id="game-board"></div>
 
 
-
+    <div class="dropdown">
+  <button class="dropbtn">How to play...</button>
+  <div class="dropdown-content">
+    <p>To start, guess any 5-letter word.</p>
+    <p>Press the letter keys on your keyboard, or the on-screen keys to type your guess.</p>
+    <p>When you are ready, press the "GUESS" button or the "Enter" key on your keyboard.</p>
+    <p>After you make a guess, the letters will change color to give you clues!
+        <ul>Gray means the letter is not in the word at all.</ul>
+        <ul>Pink means the letter is in the word but in the wrong position.</ul>
+        <ul>Cyan means the letter is correct AND in the right position!</ul>
+    </p>
+    <p>Next, you can make another guess! Use the clues from your guesses to figure out the secret word.</p>
+    <p>You have 6 guesses, if you run out of guesses, the game is over!</p>
+    <p>Reload the page to try again.</p>
+    <p>Good luck!</p>
+  </div>
+</div>
 
 
     <div id="keyboard">

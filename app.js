@@ -68,6 +68,24 @@ document.getElementById('keyboard').addEventListener('click', (event) => {
     // this allows the on-screen keyboard to work the same way as the physical keyboard.
 });
 
+// event listener for the dropdown menu (instructions) to toggle visibility when the button is clicked:
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdownBtn = document.querySelector('.dropbtn');
+  const dropdownContent = document.querySelector('.dropdown-content');
+
+  dropdownBtn.addEventListener('click', function() {
+    dropdownContent.classList.toggle('show'); // Toggles a 'show' class
+  });
+
+  // Optional: Close dropdown when clicking outside
+  window.addEventListener('click', function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      if (dropdownContent.classList.contains('show')) {
+        dropdownContent.classList.remove('show');
+      }
+    }
+  });
+});
 
 
 /* ************************************************* FUNCTIONS *************************************************
@@ -132,10 +150,39 @@ function deleteLetter() {
 
 
 
+
+// shadeKeyboard() -- function to update the keyboard letter colors based on the user's guess:
+function shadeKeyboard(letter, color) {
+    for (const elem of document.getElementsByClassName('key')) {
+        if (elem.textContent === letter) {
+            let oldColor = elem.style.backgroundColor; // gets the current background color of the key.
+            if (oldColor === 'cyan') {
+                return; // if the key is already blue, do nothing and return.
+            } 
+            if (oldColor === 'pink' && color !== 'cyan') {
+                return; // if the key is already pink and the new color is not blue, do nothing and return.
+            }
+
+            elem.style.backgroundColor = color; // sets the background color of the key to the new color.
+            break; // breaks out of the loop after updating the key color.
+        }
+    }
+}
+
+
+
+
+
+
+
+
 function checkGuess () {
     let row = document.getElementsByClassName('letter-row')[6 - guessesRemaining]; // selects the current row based on guesses remaining.
     let guessString = ''; // initializes an empty string to hold the guessed word.
     let rightGuess = Array.from(correctGuess); // converts the correctGuess into an array for comparison to the user's guess.
+
+
+    
 
     for (const val of currentGuess) {
         guessString += val; // builds the guessed word string from the current guess array.
@@ -163,9 +210,9 @@ function checkGuess () {
             letterColor = 'grey' // sets the letter box color to grey.
         } else { // if the letter IS in the correct guess...
             if (currentGuess[i] === rightGuess[i]) { // checks if letter is in the rightGuess AND in right position by index...
-                letterColor = 'green'; // shades the letter box green if so.
+                letterColor = 'cyan'; // shades the letter box green if so.
             } else { // if the letter is in the rightGuess but NOT in the right position as well...
-                letterColor = 'yellow'; // shades the letter box yellow if so.
+                letterColor = 'pink'; // shades the letter box yellow if so.
             }
 
             rightGuess[letterPosition] = '#'; // marks the letter as checked by replacing it with a placeholder.
@@ -197,23 +244,7 @@ function checkGuess () {
     }
 }
 
-// shadeKeyboard() -- function to update the keyboard letter colors based on the user's guess:
-function shadeKeyboard(letter, color) {
-    for (const elem of document.getElementsByClassName('key')) {
-        if (elem.textContent === letter) {
-            let oldColor = elem.style.backgroundColor; // gets the current background color of the key.
-            if (oldColor === 'green') {
-                return; // if the key is already green, do nothing and return.
-            } 
-            if (oldColor === 'yellow' && color !== 'green') {
-                return; // if the key is already yellow and the new color is not green, do nothing and return.
-            }
 
-            elem.style.backgroundColor = color; // sets the background color of the key to the new color.
-            break; // breaks out of the loop after updating the key color.
-        }
-    }
-}
 
 
 // function utilizing animate.css to utilize the animation library for visual effects in the game.
