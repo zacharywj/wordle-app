@@ -12,25 +12,24 @@ h1 {
 
 .dropdown {
   position: relative;
-  display: inline-block; /* Or block, depending on layout */
+  display: inline-block; 
 }
 
 .dropbtn {
-  /* Style your button here */
   background-color: #eb7cff;
   color: white;
   padding: 16px;
   font-size: 16px;
   border: none;
   cursor: pointer;
-  position: fixed; /* Keep it in the same position on scroll */
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 9999;
 }
 
 .dropdown-content {
-  display: none; /* Hidden by default */
+  display: none; 
   position: fixed;
   top: 50px;
   left: 0;
@@ -38,15 +37,11 @@ h1 {
   min-width: 160px;
   max-width: 300px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1; /* Ensures it appears above other elements */
-  padding: 12px; /* Add padding for readability */
+  z-index: 1; 
+  padding: 12px; 
 }
 
-/* Show the dropdown content when the dropdown container is hovered or active */
-/* For instructions, a click-to-toggle is more common, see JavaScript section */
-/* .dropdown:hover .dropdown-content {
-  display: block;
-} */
+
 
 .dropdown-content.show {
   display: block;
