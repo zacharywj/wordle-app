@@ -1,6 +1,9 @@
 # In-Browser Wordle App
+![wordle game logo](assets/wordle-logo.png) 
 
-## About: 
+
+## About:
+A fun word game where in order to win, the user must guess the secret 5-letter word by guessing words, and using hints they get from each word they try. Can *you* guess the word?
 
 ## Getting started:
 You can play the game by clicking [this link](https://zacharywj.github.io/wordle-app/), right now! Just load the game in your browser to get started. The instructions for how to play are listed below, as well as in a drop down menu in the top left of the game's browser.
@@ -21,15 +24,23 @@ You can play the game by clicking [this link](https://zacharywj.github.io/wordle
 + If you do not, and you've used all 6 of your guesses, the game is over and you lose. The game will then tell you what the correct answer was. 
 
 
-## Attributions:
-Other technologies I used, besides my primary programming languages (see: next header) include: 
 
+
+## Technologies Used:
+To write my application I utilized these languages and associated libraries, API's and/or CDNs.
++ HTML
++ CSS
++ JavaScript 
+    + JQuery
+    + Toastr
+    + Animate.css
+
+
+## Attributions:
+Libraries and assets I used besides base coding languages for my application. 
 + Toastr
 + Animate.css
 + JQuery
-
-## Technologies Used:
-To write my application I utilized HTML, CSS, and JavaScript (as well as associated libraries discussed above). 
 
 ## Future updates, coming soon:
 + An expanded word bank.

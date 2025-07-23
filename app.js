@@ -1,6 +1,5 @@
 import { wordBank } from './word-bank.js'; // imports the word bank from the word-bank.js file
 
-
 /* *************************************************** GLOBAL VARIABLES *************************************************
 global constants and variables used throughout the app.js file to manage the game state, user input, and logic. */
 // constants/variables that initialize the number of guesses and set up the game state.
@@ -223,7 +222,7 @@ function checkGuess () {
         setTimeout(()=> {
             animateCSS(box, 'flipInX'); // applies a flip-in animation to the letter box when the letter is checked.
             box.style.backgroundColor = letterColor; // changes the background color of the letter box to the determined color.
-            shadeKeyBoard(letter, letterColor); // calls the shadeKeyboard function to update the keyboard letter color based on the user's guess.
+            shadeKeyboard(letter, letterColor); // calls the shadeKeyboard function to update the keyboard letter color based on the user's guess.
         }, delay); // applies the delay to the letter box color change animation.
     }
 
